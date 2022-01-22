@@ -1,87 +1,63 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation </a
-            >.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3" />
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br />
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+  <div>
+    <canvas id="bg"></canvas>
+    <v-row justify="center" align="center">
+      <v-col cols="12" sm="8" md="6"> </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
+import * as THREE from 'three'
 export default {
-  name: 'IndexPage',
+  data() {
+    return {
+      scene: null,
+      camera: null,
+      renderer: null,
+    }
+  },
+  mounted() {
+    this.init()
+    this.animate()
+
+    const geometry = new THREE.TorusGeometry(10, 3, 16, 100)
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xff4532,
+      wireframe: true,
+    })
+    const torus = new THREE.Mesh(geometry, material)
+    this.scene.add(torus)
+    this.renderer.render(this.scene, this.camera)
+  },
+  methods: {
+    init() {
+      this.scene = new THREE.Scene()
+      this.camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      )
+      this.renderer = new THREE.WebGLRenderer({
+        canvas: document.querySelector('#bg'),
+      })
+      this.renderer.setPixelRatio(window.devicePixelRatio)
+      this.renderer.setSize(window.innerWidth, window.innerHeight)
+      this.camera.position.setZ(30)
+    },
+    animate() {
+      requestAnimationFrame(this.animate)
+      this.renderer.render(this.scene, this.camera)
+    },
+  },
 }
 </script>
+
+<style scoped>
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+</style>
