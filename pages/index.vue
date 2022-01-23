@@ -20,6 +20,8 @@ export default {
     this.threeJSBackground = new ThreeJSBackground(
       document.querySelector('#bg')
     )
+
+    this.threeJSBackground.triangulate()
   },
 }
 </script>
