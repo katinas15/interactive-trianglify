@@ -78,6 +78,7 @@ export default class ThreeJSBackground {
 
     console.warn(points)
 
+    // gets indexes of points the point is connected to
     let geomIndices = Delaunator.from(points).triangles
 
     console.warn(geomIndices)
@@ -100,7 +101,7 @@ export default class ThreeJSBackground {
       const xPercent = normalize(centroid.x / window.innerWidth)
       const yPercent = normalize(centroid.y / window.innerHeight)
 
-      const color: chrome.Color = interpolateLinear({
+      const color: chroma.Color = interpolateLinear({
         xPercent, // x-coordinate of centroid, normalized to [0, 1]
         yPercent, // y-coordinate of centroid, normalized to [0, 1]
         xScale, // x-colors scale for the pattern
@@ -111,16 +112,7 @@ export default class ThreeJSBackground {
       // const b = points[geomIndices[i + 1]]
       // const c = points[geomIndices[i + 2]]
 
-      // const color = xScale(cRand).hex()
-      // const material = new THREE.MeshBasicMaterial({
-      //     color: color,
-      //     side: THREE.DoubleSide,
-      // })
-
-      // const poly = new THREE.Mesh(
-      //     new THREE.Geometry().fromPoints([a, b, c]),
-      //     material
-      // )
+      //
 
       // polys.push(poly)
       polys.push({
@@ -157,7 +149,7 @@ const interpolateLinear =
 
 const normalize = (num: number) => Math.max(0, Math.min(1, num))
 
-const getCentroid = (d) => {
+const getCentroid = (d: number[][]) => {
   return {
     x: (d[0][0] + d[1][0] + d[2][0]) / 3,
     y: (d[0][1] + d[1][1] + d[2][1]) / 3,
