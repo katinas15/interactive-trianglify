@@ -1,10 +1,7 @@
 <template>
   <v-app dark>
-    <v-main>
-      <v-container>
-        <Nuxt />
-      </v-container>
-    </v-main>
+    <Nuxt />
+
     <v-footer :absolute="!fixed" app>
       <span>&copy; Laimonas Janutėnas - {{ new Date().getFullYear() }}</span>
     </v-footer>

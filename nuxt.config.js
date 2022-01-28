@@ -78,6 +78,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['three', 'delaunator', 'robust-predicates'],
+    transpile: ['three', 'delaunator', 'robust-predicates', 'trianglify'],
   },
 }

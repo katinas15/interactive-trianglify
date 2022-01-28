@@ -2,26 +2,97 @@
   <div>
     <canvas id="bg"></canvas>
     <v-row justify="center" align="center">
-      <v-col cols="12" sm="8" md="6"> </v-col>
+      <v-col cols="12" sm="8" md="6"> nice content </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import ThreeJSBackground from '../utils/threejs/triangles'
-
+import trianglify from 'trianglify'
 export default {
   data() {
-    return {
-      threeJSBackground: null,
-    }
+    return {}
   },
   mounted() {
-    this.threeJSBackground = new ThreeJSBackground(
-      document.querySelector('#bg')
-    )
+    const width = window.innerWidth
+    const height = window.innerHeight
 
-    this.threeJSBackground.triangulate()
+    const getPoints = (opts) => {
+      const { width, height, cellSize, variance } = opts
+
+      // pad by 2 cells outside the visible area on each side to ensure we fully
+      // cover the 'artboard'
+      const colCount = Math.floor(width / cellSize) + 4
+      const rowCount = Math.floor(height / cellSize) + 4
+
+      // determine bleed values to ensure that the grid is centered within the
+      // artboard
+      const bleedX = (colCount * cellSize - width) / 2
+      const bleedY = (rowCount * cellSize - height) / 2
+
+      // apply variance to cellSize to get cellJitter in pixels
+      const cellJitter = cellSize * variance
+      const getJitter = () => (Math.random() - 0.5) * cellJitter
+
+      const pointCount = colCount * rowCount
+
+      const halfCell = cellSize / 2
+
+      const points = Array(pointCount)
+        .fill(null)
+        .map((_, i) => {
+          const col = i % colCount
+          const row = Math.floor(i / colCount)
+
+          // [x, y, z]
+          return [
+            -bleedX + col * cellSize + halfCell + getJitter(),
+            -bleedY + row * cellSize + halfCell + getJitter(),
+          ]
+        })
+
+      return points
+    }
+
+    const points = getPoints({
+      width,
+      height,
+      cellSize: 70,
+      variance: 0.9,
+    })
+
+    let enableCall = true
+    document.addEventListener('mousemove', (event) => {
+      if (!enableCall) return
+      enableCall = false
+
+      const localPoints = [...points]
+      localPoints.push([event.clientX, event.clientY])
+
+      const canvas = document.querySelector('#bg')
+      const pattern = trianglify({
+        width,
+        height,
+        xColors: [
+          '#f7fbff',
+          '#deebf7',
+          '#c6dbef',
+          '#9ecae1',
+          '#6baed6',
+          '#4292c6',
+          '#2171b5',
+          '#08519c',
+          '#08306b',
+        ],
+        points: localPoints,
+      })
+
+      const patternCanvas = pattern.toCanvas()
+      patternCanvas.setAttribute('id', 'bg')
+
+      canvas.replaceWith(patternCanvas)
+      setTimeout(() => (enableCall = true), 50)
+    })
   },
 }
 </script>
