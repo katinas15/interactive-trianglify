@@ -1780,6 +1780,11 @@
   "resolved" "https://registry.npmjs.org/@types/three/-/three-0.136.1.tgz"
   "version" "0.136.1"
 
+"@types/trianglify@^1.2.1":
+  "integrity" "sha512-vx+sQ7FF2XBYuDq3aGch6MUqn6O2MVas7Dq1l3fo5L3qTB1/Uqq2ehlwvkIoyONdFwpVJeYEUOsCLYVCkawBzQ=="
+  "resolved" "https://registry.npmjs.org/@types/trianglify/-/trianglify-1.2.1.tgz"
+  "version" "1.2.1"
+
 "@types/uglify-js@*":
   "integrity" "sha512-O3MmRAk6ZuAKa9CHgg0Pr0+lUOqoMLpc9AS4R8ano2auvsg7IE8syF3Xh/NPr26TWklxYcqoEEFdzLLs1fV9PQ=="
   "resolved" "https://registry.npmjs.org/@types/uglify-js/-/uglify-js-3.13.1.tgz"

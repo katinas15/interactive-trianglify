@@ -6,6 +6,7 @@ const FRAME_DELAY: number = 1000 / 30 // 30fps
 const MAX_BACKGROUND_CIRCLE_RADIUS = 5
 const CLICK_TEXT_OFFSET = 10
 const CLICK_TEXT_FONT = '14px Trebuchet MS'
+const CIRCLE_COLOR = '#000'
 
 interface Options {
   canvas: HTMLCanvasElement
@@ -13,6 +14,7 @@ interface Options {
   height: number
   cellSize: number
   variance: number
+  circleColor?: string
 }
 
 const generatePoints = (opts: Options) => {
@@ -64,8 +66,25 @@ const generateCircleSize = () => {
   return Math.random() * (max - min) + min
 }
 
+const drawCircle = (
+  ctx: CanvasRenderingContext2D,
+  point: number[],
+  radius: number = MAX_BACKGROUND_CIRCLE_RADIUS,
+  color: string
+) => {
+  ctx.beginPath()
+  ctx.arc(point[0], point[1], radius, 0, 2 * Math.PI)
+
+  ctx.closePath()
+
+  if (color) {
+    ctx.fillStyle = color
+    ctx.fill()
+  }
+}
+
 export default class Background {
-  private ctx: CanvasRenderingContext2D
+  private ctx: CanvasRenderingContext2D | null
   private points: number[][] = []
   private movementDirections: number[][] = []
   private circleSizes: number[] = []
@@ -111,7 +130,7 @@ export default class Background {
     })
   }
 
-  private updateFrame = () => {
+  private updatePoints = () => {
     this.points = this.points.map(([x, y], index) => {
       if (x > this.opts.width || x < 0) {
         this.movementDirections[index][0] *= -1
@@ -155,30 +174,21 @@ export default class Background {
     })
 
     pattern.toCanvas(this.opts.canvas)
+  }
 
-    const drawCircle = (
-      ctx: CanvasRenderingContext2D,
-      point: number[],
-      radius = MAX_BACKGROUND_CIRCLE_RADIUS,
-      color: string
-    ) => {
-      ctx.beginPath()
-      ctx.arc(point[0], point[1], radius, 0, 2 * Math.PI)
-
-      ctx.closePath()
-
-      if (color) {
-        ctx.fillStyle = color
-        ctx.fill()
-      }
-    }
-    const circleColor = '#000'
-
-    if (!this.ctx) return
+  private updateCircles = () => {
     this.points.forEach((point: number[], index: number) => {
-      drawCircle(this.ctx, point, this.circleSizes[index], circleColor)
+      if (this.ctx == null) return
+      return drawCircle(
+        this.ctx,
+        point,
+        this.circleSizes[index] || MAX_BACKGROUND_CIRCLE_RADIUS,
+        this.opts.circleColor || CIRCLE_COLOR
+      )
     })
+  }
 
+  private updateText = () => {
     if (!this.clicked && this.ctx) {
       this.ctx.font = CLICK_TEXT_FONT
       this.ctx.fillText(
@@ -187,5 +197,18 @@ export default class Background {
         this.mousePos[1] - CLICK_TEXT_OFFSET
       )
     }
+  }
+
+  private updateFrame = () => {
+    this.updatePoints()
+    this.updateCircles()
+    drawCircle(
+      this.ctx,
+      this.mousePos,
+      MAX_BACKGROUND_CIRCLE_RADIUS,
+      CIRCLE_COLOR
+    )
+
+    this.updateText()
   }
 }

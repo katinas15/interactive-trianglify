@@ -11,13 +11,15 @@
 import Background from '../utils/trianglifyBackground.ts'
 export default {
   data() {
-    return {}
+    return {
+      backgroud: {},
+    }
   },
   mounted() {
     const width = window.innerWidth
     const height = window.innerHeight
     const canvas = document.querySelector('#bg')
-    const background = new Background({
+    this.background = new Background({
       width,
       height,
       canvas,
