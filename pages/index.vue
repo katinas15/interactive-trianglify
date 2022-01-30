@@ -9,9 +9,14 @@
 
 <script>
 import trianglify from 'trianglify'
+
+const FRAME_DELAY = 33
+const BACKGROUND_MOVEMENT_SPEED = 1
 export default {
   data() {
-    return {}
+    return {
+      mousePosition: null,
+    }
   },
   mounted() {
     const width = window.innerWidth
@@ -54,29 +59,57 @@ export default {
       return points
     }
 
-    const points = getPoints({
+    let points = getPoints({
       width,
       height,
-      cellSize: 70,
+      cellSize: 100,
       variance: 0.9,
     })
 
-    let enableCall = true
+    let movementEveryFrame = points.map(() => {
+      const x = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
+      const y = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
+      return [x, y]
+    })
+
+    let enableCallMouse = true
     document.addEventListener('mousemove', (event) => {
-      if (!enableCall) return
-      enableCall = false
+      if (!enableCallMouse) return
+      enableCallMouse = false
+      this.mousePosition = [event.clientX, event.clientY]
+      setTimeout(() => {
+        enableCallMouse = true
+      }, FRAME_DELAY)
+    })
+
+    setInterval(function () {
+      points = points.map(([x, y], index) => {
+        if (x > width || x < 0) {
+          movementEveryFrame[index][0] *= -1
+        }
+
+        if (y > height || y < 0) {
+          movementEveryFrame[index][1] *= -1
+        }
+        const [xSpeed, ySpeed] = movementEveryFrame[index]
+        const [xMove, yMove] = [x + xSpeed, y + ySpeed]
+        return [xMove, yMove]
+      })
 
       const localPoints = [...points]
-      localPoints.push([event.clientX, event.clientY])
+      if (this.mousePos) {
+        localPoints.push([this.mousePos[0], this.mousePos[1]])
+      }
 
       const canvas = document.querySelector('#bg')
       const pattern = trianglify({
         width,
         height,
+        // xColors: ['#000000', '#0C0C0C', '#000000'],
         xColors: [
-          '#f7fbff',
-          '#deebf7',
-          '#c6dbef',
+          '#000000',
+          '#0C0C0C',
+          '#000000',
           '#9ecae1',
           '#6baed6',
           '#4292c6',
@@ -91,8 +124,7 @@ export default {
       patternCanvas.setAttribute('id', 'bg')
 
       canvas.replaceWith(patternCanvas)
-      setTimeout(() => (enableCall = true), 50)
-    })
+    }, FRAME_DELAY)
   },
 }
 </script>
