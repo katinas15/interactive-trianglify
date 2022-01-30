@@ -9,12 +9,16 @@
 
 <script>
 import trianglify from 'trianglify'
+import {
+  generatePoints,
+  generateMovementDirection,
+  generateCircleSize,
+  MAX_BACKGROUND_CIRCLE_RADIUS,
+} from '../utils/trianglifyBackground'
 
 const FRAME_DELAY = 1000 / 30 // 30fps
-const BACKGROUND_MOVEMENT_SPEED = 1
-const MAX_BACKGROUND_CIRCLE_RADIUS = 5
-const MIN_BACKGROUND_CIRCLE_RADIUS = 2
 const CLICK_TEXT_OFFSET = 10
+const CLICK_TEXT_FONT = '14px Trebuchet MS'
 
 export default {
   data() {
@@ -23,69 +27,23 @@ export default {
   mounted() {
     const width = window.innerWidth
     const height = window.innerHeight
+    const canvas = document.querySelector('#bg')
+    const ctx = canvas.getContext('2d')
+    const circleColor = '#000'
 
-    const getPoints = (opts) => {
-      const { width, height, cellSize, variance } = opts
-
-      // pad by 2 cells outside the visible area on each side to ensure we fully
-      // cover the 'artboard'
-      const colCount = Math.floor(width / cellSize) + 4
-      const rowCount = Math.floor(height / cellSize) + 4
-
-      // determine bleed values to ensure that the grid is centered within the
-      // artboard
-      const bleedX = (colCount * cellSize - width) / 2
-      const bleedY = (rowCount * cellSize - height) / 2
-
-      // apply variance to cellSize to get cellJitter in pixels
-      const cellJitter = cellSize * variance
-      const getJitter = () => (Math.random() - 0.5) * cellJitter
-
-      const pointCount = colCount * rowCount
-
-      const halfCell = cellSize / 2
-
-      const points = Array(pointCount)
-        .fill(null)
-        .map((_, i) => {
-          const col = i % colCount
-          const row = Math.floor(i / colCount)
-
-          // [x, y, z]
-          return [
-            -bleedX + col * cellSize + halfCell + getJitter(),
-            -bleedY + row * cellSize + halfCell + getJitter(),
-          ]
-        })
-
-      return points
-    }
-
-    let points = getPoints({
+    let points = generatePoints({
       width,
       height,
       cellSize: 100,
-      variance: 0.9,
+      variance: 0,
     })
-
-    const getFrameMovement = () => {
-      const x = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
-      const y = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
-      return [x, y]
-    }
 
     const movementEveryFrame = points.map(() => {
-      return getFrameMovement()
+      return generateMovementDirection()
     })
 
-    const getCircleSize = () => {
-      const max = MAX_BACKGROUND_CIRCLE_RADIUS
-      const min = MIN_BACKGROUND_CIRCLE_RADIUS
-      return Math.random() * (max - min) + min
-    }
-
     const circleSizes = points.map(() => {
-      return getCircleSize()
+      return generateCircleSize()
     })
 
     let enableCallMouse = true
@@ -94,8 +52,8 @@ export default {
 
     document.addEventListener('click', (event) => {
       points.push([event.clientX, event.clientY])
-      movementEveryFrame.push(getFrameMovement())
-      circleSizes.push(getCircleSize())
+      movementEveryFrame.push(generateMovementDirection())
+      circleSizes.push(generateCircleSize())
       clicked = true
     })
 
@@ -108,7 +66,6 @@ export default {
       }, FRAME_DELAY)
     })
 
-    const canvas = document.querySelector('#bg')
     setInterval(function () {
       points = points.map(([x, y], index) => {
         if (x > width || x < 0) {
@@ -152,8 +109,6 @@ export default {
         points: localPoints,
       })
 
-      // console.warn(pattern)
-
       pattern.toCanvas(canvas)
 
       const drawCircle = (
@@ -162,8 +117,6 @@ export default {
         radius = MAX_BACKGROUND_CIRCLE_RADIUS,
         color
       ) => {
-        // console.warn(poly)
-        // console.warn(vertexIndices)
         ctx.beginPath()
         ctx.arc(point[0], point[1], radius, 0, 2 * Math.PI)
 
@@ -175,14 +128,12 @@ export default {
         }
       }
 
-      const ctx = canvas.getContext('2d')
-      const color = '#000'
       pattern.points.forEach((point, index) => {
-        drawCircle(ctx, point, circleSizes[index], color)
+        drawCircle(ctx, point, circleSizes[index], circleColor)
       })
 
       if (!clicked) {
-        ctx.font = '14px Trebuchet MS'
+        ctx.font = CLICK_TEXT_FONT
         ctx.fillText(
           'Click!',
           mousePos[0] + CLICK_TEXT_OFFSET,
