@@ -80,7 +80,7 @@ export default {
         enableCallMouse = true
       }, FRAME_DELAY)
     })
-
+    const canvas = document.querySelector('#bg')
     setInterval(function () {
       points = points.map(([x, y], index) => {
         if (x > width || x < 0) {
@@ -100,7 +100,6 @@ export default {
         localPoints.push([mousePos[0], mousePos[1]])
       }
 
-      const canvas = document.querySelector('#bg')
       const pattern = trianglify({
         width,
         height,
@@ -119,15 +118,13 @@ export default {
           '#0D0D0D',
           '#000000',
         ],
+
         // xColors: ['#fff69f', '#fdd870', '#d0902f', '#a15501', '#351409'],
         // xColors: ['#C78B06', '#C78B06', '#5D430A', '#DED765', '#310D01'],
         points: localPoints,
       })
 
-      const patternCanvas = pattern.toCanvas()
-      patternCanvas.setAttribute('id', 'bg')
-
-      canvas.replaceWith(patternCanvas)
+      pattern.toCanvas(canvas)
     }, FRAME_DELAY)
   },
 }
