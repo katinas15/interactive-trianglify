@@ -10,8 +10,10 @@
 <script>
 import trianglify from 'trianglify'
 
-const FRAME_DELAY = 33
+const FRAME_DELAY = 1000 / 25 // 25fps
 const BACKGROUND_MOVEMENT_SPEED = 1
+const MAX_BACKGROUND_CIRCLE_RADIUS = 5
+const MIN_BACKGROUND_CIRCLE_RADIUS = 2
 export default {
   data() {
     return {}
@@ -68,6 +70,12 @@ export default {
       const x = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
       const y = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
       return [x, y]
+    })
+
+    const circleSizes = points.map(() => {
+      const max = MAX_BACKGROUND_CIRCLE_RADIUS
+      const min = MIN_BACKGROUND_CIRCLE_RADIUS
+      return Math.random() * (max - min) + min
     })
 
     let enableCallMouse = true
@@ -129,20 +137,17 @@ export default {
 
       pattern.toCanvas(canvas)
 
-      const drawCircle = (ctx, points, poly, radius, color) => {
+      const drawCircle = (
+        ctx,
+        point,
+        radius = MAX_BACKGROUND_CIRCLE_RADIUS,
+        color
+      ) => {
         // console.warn(poly)
-        const vertexIndices = poly.vertexIndices
         // console.warn(vertexIndices)
         ctx.beginPath()
-        ctx.arc(
-          points[vertexIndices[0]][0],
-          points[vertexIndices[0]][1],
-          1,
-          0,
-          2 * Math.PI
-        )
+        ctx.arc(point[0], point[1], radius, 0, 2 * Math.PI)
 
-        ctx.stroke()
         ctx.closePath()
 
         if (color) {
@@ -152,10 +157,9 @@ export default {
       }
 
       const ctx = canvas.getContext('2d')
-
-      pattern.polys.forEach((poly) => {
-        const color = '#fff'
-        drawCircle(ctx, pattern.points, poly, 10, color)
+      const color = '#000'
+      pattern.points.forEach((point, index) => {
+        drawCircle(ctx, point, circleSizes[index], color)
       })
     }, FRAME_DELAY)
   },
