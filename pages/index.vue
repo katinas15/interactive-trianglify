@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import trianglify from '../../trianglify/src/trianglify'
+import trianglify from 'trianglify'
 
 const FRAME_DELAY = 33
 const BACKGROUND_MOVEMENT_SPEED = 1
@@ -80,6 +80,7 @@ export default {
         enableCallMouse = true
       }, FRAME_DELAY)
     })
+
     const canvas = document.querySelector('#bg')
     setInterval(function () {
       points = points.map(([x, y], index) => {
@@ -124,7 +125,38 @@ export default {
         points: localPoints,
       })
 
+      // console.warn(pattern)
+
       pattern.toCanvas(canvas)
+
+      const drawCircle = (ctx, points, poly, radius, color) => {
+        // console.warn(poly)
+        const vertexIndices = poly.vertexIndices
+        // console.warn(vertexIndices)
+        ctx.beginPath()
+        ctx.arc(
+          points[vertexIndices[0]][0],
+          points[vertexIndices[0]][1],
+          1,
+          0,
+          2 * Math.PI
+        )
+
+        ctx.stroke()
+        ctx.closePath()
+
+        if (color) {
+          ctx.fillStyle = color
+          ctx.fill()
+        }
+      }
+
+      const ctx = canvas.getContext('2d')
+
+      pattern.polys.forEach((poly) => {
+        const color = '#fff'
+        drawCircle(ctx, pattern.points, poly, 10, color)
+      })
     }, FRAME_DELAY)
   },
 }
