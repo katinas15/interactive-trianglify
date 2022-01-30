@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import trianglify from 'trianglify'
+import trianglify from '../../trianglify/src/trianglify'
 
 const FRAME_DELAY = 33
 const BACKGROUND_MOVEMENT_SPEED = 1
@@ -104,18 +104,23 @@ export default {
       const pattern = trianglify({
         width,
         height,
-        xColors: ['#000000', '#0C0C0C', '#000000'],
-        // xColors: [
-        //   '#000000',
-        //   '#0C0C0C',
-        //   '#000000',
-        //   '#9ecae1',
-        //   '#6baed6',
-        //   '#4292c6',
-        //   '#2171b5',
-        //   '#08519c',
-        //   '#08306b',
-        // ],
+        // xColors: ['#000000', '#0C0C0C', '#000000'],
+        xColors: [
+          '#000000',
+          '#0D0D0D',
+          '#351409',
+          '#a15501',
+          '#d0902f',
+          '#fff69f',
+          '#fdd870',
+          '#d0902f',
+          '#a15501',
+          '#351409',
+          '#0D0D0D',
+          '#000000',
+        ],
+        // xColors: ['#fff69f', '#fdd870', '#d0902f', '#a15501', '#351409'],
+        // xColors: ['#C78B06', '#C78B06', '#5D430A', '#DED765', '#310D01'],
         points: localPoints,
       })
 
