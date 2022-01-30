@@ -10,10 +10,12 @@
 <script>
 import trianglify from 'trianglify'
 
-const FRAME_DELAY = 1000 / 25 // 25fps
+const FRAME_DELAY = 1000 / 30 // 30fps
 const BACKGROUND_MOVEMENT_SPEED = 1
 const MAX_BACKGROUND_CIRCLE_RADIUS = 5
 const MIN_BACKGROUND_CIRCLE_RADIUS = 2
+const CLICK_TEXT_OFFSET = 10
+
 export default {
   data() {
     return {}
@@ -72,7 +74,7 @@ export default {
       return [x, y]
     }
 
-    let movementEveryFrame = points.map(() => {
+    const movementEveryFrame = points.map(() => {
       return getFrameMovement()
     })
 
@@ -82,17 +84,19 @@ export default {
       return Math.random() * (max - min) + min
     }
 
-    let circleSizes = points.map(() => {
+    const circleSizes = points.map(() => {
       return getCircleSize()
     })
 
     let enableCallMouse = true
+    let clicked = false
     let mousePos = [0, 0]
 
     document.addEventListener('click', (event) => {
       points.push([event.clientX, event.clientY])
       movementEveryFrame.push(getFrameMovement())
       circleSizes.push(getCircleSize())
+      clicked = true
     })
 
     document.addEventListener('mousemove', (event) => {
@@ -176,6 +180,15 @@ export default {
       pattern.points.forEach((point, index) => {
         drawCircle(ctx, point, circleSizes[index], color)
       })
+
+      if (!clicked) {
+        ctx.font = '14px Trebuchet MS'
+        ctx.fillText(
+          'Click!',
+          mousePos[0] + CLICK_TEXT_OFFSET,
+          mousePos[1] - CLICK_TEXT_OFFSET
+        )
+      }
     }, FRAME_DELAY)
   },
 }
