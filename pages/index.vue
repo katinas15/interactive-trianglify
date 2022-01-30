@@ -14,9 +14,7 @@ const FRAME_DELAY = 33
 const BACKGROUND_MOVEMENT_SPEED = 1
 export default {
   data() {
-    return {
-      mousePosition: null,
-    }
+    return {}
   },
   mounted() {
     const width = window.innerWidth
@@ -66,17 +64,18 @@ export default {
       variance: 0.9,
     })
 
-    let movementEveryFrame = points.map(() => {
+    const movementEveryFrame = points.map(() => {
       const x = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
       const y = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
       return [x, y]
     })
 
     let enableCallMouse = true
+    let mousePos = [0, 0]
     document.addEventListener('mousemove', (event) => {
       if (!enableCallMouse) return
       enableCallMouse = false
-      this.mousePosition = [event.clientX, event.clientY]
+      mousePos = [event.clientX, event.clientY]
       setTimeout(() => {
         enableCallMouse = true
       }, FRAME_DELAY)
@@ -97,26 +96,26 @@ export default {
       })
 
       const localPoints = [...points]
-      if (this.mousePos) {
-        localPoints.push([this.mousePos[0], this.mousePos[1]])
+      if (mousePos) {
+        localPoints.push([mousePos[0], mousePos[1]])
       }
 
       const canvas = document.querySelector('#bg')
       const pattern = trianglify({
         width,
         height,
-        // xColors: ['#000000', '#0C0C0C', '#000000'],
-        xColors: [
-          '#000000',
-          '#0C0C0C',
-          '#000000',
-          '#9ecae1',
-          '#6baed6',
-          '#4292c6',
-          '#2171b5',
-          '#08519c',
-          '#08306b',
-        ],
+        xColors: ['#000000', '#0C0C0C', '#000000'],
+        // xColors: [
+        //   '#000000',
+        //   '#0C0C0C',
+        //   '#000000',
+        //   '#9ecae1',
+        //   '#6baed6',
+        //   '#4292c6',
+        //   '#2171b5',
+        //   '#08519c',
+        //   '#08306b',
+        // ],
         points: localPoints,
       })
 
