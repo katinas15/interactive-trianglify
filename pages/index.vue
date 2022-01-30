@@ -66,20 +66,35 @@ export default {
       variance: 0.9,
     })
 
-    const movementEveryFrame = points.map(() => {
+    const getFrameMovement = () => {
       const x = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
       const y = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
       return [x, y]
+    }
+
+    let movementEveryFrame = points.map(() => {
+      return getFrameMovement()
     })
 
-    const circleSizes = points.map(() => {
+    const getCircleSize = () => {
       const max = MAX_BACKGROUND_CIRCLE_RADIUS
       const min = MIN_BACKGROUND_CIRCLE_RADIUS
       return Math.random() * (max - min) + min
+    }
+
+    let circleSizes = points.map(() => {
+      return getCircleSize()
     })
 
     let enableCallMouse = true
     let mousePos = [0, 0]
+
+    document.addEventListener('click', (event) => {
+      points.push([event.clientX, event.clientY])
+      movementEveryFrame.push(getFrameMovement())
+      circleSizes.push(getCircleSize())
+    })
+
     document.addEventListener('mousemove', (event) => {
       if (!enableCallMouse) return
       enableCallMouse = false
