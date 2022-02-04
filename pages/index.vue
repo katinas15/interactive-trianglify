@@ -16,7 +16,7 @@
               <v-container>
                 <v-row>
                   <v-slider
-                    v-model="backgroundMovementSpeed"
+                    v-model="opts.backgroundMovementSpeed"
                     step="10"
                     thumb-label
                     ticks
@@ -47,6 +47,9 @@ export default {
     return {
       dialog: false,
       opts: {
+        width: 0,
+        height: 0,
+        canvas: null,
         backgroundMovementSpeed: 0.5,
         minBackgroundCircleSize: 2,
         maxBackgroundCircleSize: 5,
@@ -56,16 +59,24 @@ export default {
       backgroud: {},
     }
   },
+  watch: {
+    opts: {
+      handler() {
+        this.updateBackground()
+      },
+      deep: true,
+    },
+  },
   mounted() {
-    const width = window.innerWidth
-    const height = window.innerHeight
-    const canvas = document.querySelector('#bg')
-    this.background = new Background({
-      ...this.opts,
-      width,
-      height,
-      canvas,
-    })
+    this.opts.width = window.innerWidth
+    this.opts.height = window.innerHeight
+    this.opts.canvas = document.querySelector('#bg')
+    this.background = new Background(this.opts)
+  },
+  methods: {
+    updateBackground() {
+      this.background.setOpts(this.opts)
+    },
   },
 }
 </script>

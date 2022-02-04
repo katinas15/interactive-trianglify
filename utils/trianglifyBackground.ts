@@ -1,9 +1,7 @@
 import trianglify from 'trianglify'
 
-const BACKGROUND_MOVEMENT_SPEED = 0.5
-const MIN_BACKGROUND_CIRCLE_RADIUS = 2
+const MOUSE_CURSOR_RADIUS = 5
 const FRAME_DELAY: number = 1000 / 30 // 30fps
-const MAX_BACKGROUND_CIRCLE_RADIUS = 5
 const CLICK_TEXT_OFFSET = 10
 const CLICK_TEXT_FONT = '14px Trebuchet MS'
 const CIRCLE_COLOR = '#000'
@@ -14,9 +12,10 @@ interface Options {
   height: number
   cellSize: number
   variance: number
-  backgroundMovementSpeed: number
-  minBackgroundCircleSize: number
-  maxBackgroundCircleSize: number
+  minCircleSpeed: number
+  maxCircleSpeed: number
+  minCircleSize: number
+  maxCircleSize: number
   circleColor?: string
 }
 
@@ -57,22 +56,25 @@ const generatePoints = (opts: Options) => {
   return points
 }
 
-const generateMovementDirection = () => {
-  const x = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
-  const y = (Math.random() * 2 - 1) * BACKGROUND_MOVEMENT_SPEED
+const generateMovementDirection = (
+  minCircleSpeed: number,
+  maxCircleSpeed: number
+) => {
+  const x = (Math.random() * minCircleSpeed - 1) * maxCircleSpeed
+  const y = (Math.random() * minCircleSpeed - 1) * maxCircleSpeed
   return [x, y]
 }
 
-const generateCircleSize = () => {
-  const max = MAX_BACKGROUND_CIRCLE_RADIUS
-  const min = MIN_BACKGROUND_CIRCLE_RADIUS
+const generateCircleSize = (minCircleSize: number, maxCircleSize: number) => {
+  const max = maxCircleSize
+  const min = minCircleSize
   return Math.random() * (max - min) + min
 }
 
 const drawCircle = (
   ctx: CanvasRenderingContext2D,
   point: number[],
-  radius: number = MAX_BACKGROUND_CIRCLE_RADIUS,
+  radius: number = MOUSE_CURSOR_RADIUS,
   color: string
 ) => {
   ctx.beginPath()
@@ -107,7 +109,7 @@ export default class Background {
     setInterval(this.updateFrame, FRAME_DELAY)
   }
 
-  private setOpts = (opts: Options): void => {
+  public setOpts = (opts: Options): void => {
     this.opts = opts
     this.initializePoints()
   }
@@ -115,18 +117,32 @@ export default class Background {
   private initializePoints = () => {
     this.points = generatePoints(this.opts)
     this.movementDirections = this.points.map(() => {
-      return generateMovementDirection()
+      return generateMovementDirection(
+        this.opts.minCircleSpeed,
+        this.opts.maxCircleSpeed
+      )
     })
+
     this.circleSizes = this.points.map(() => {
-      return generateCircleSize()
+      return generateCircleSize(
+        this.opts.minCircleSize,
+        this.opts.maxCircleSize
+      )
     })
   }
 
   private handleClicks = () => {
     this.opts.canvas.addEventListener('click', (event) => {
       this.points.push([event.clientX, event.clientY])
-      this.movementDirections.push(generateMovementDirection())
-      this.circleSizes.push(generateCircleSize())
+      this.movementDirections.push(
+        generateMovementDirection(
+          this.opts.minCircleSpeed,
+          this.opts.maxCircleSpeed
+        )
+      )
+      this.circleSizes.push(
+        generateCircleSize(this.opts.minCircleSize, this.opts.maxCircleSize)
+      )
       this.clicked = true
     })
   }
@@ -202,7 +218,7 @@ export default class Background {
       return drawCircle(
         this.ctx,
         point,
-        this.circleSizes[index] || MAX_BACKGROUND_CIRCLE_RADIUS,
+        this.circleSizes[index],
         this.opts.circleColor || CIRCLE_COLOR
       )
     })
@@ -224,12 +240,7 @@ export default class Background {
     this.updateCircles()
 
     if (this.ctx)
-      drawCircle(
-        this.ctx,
-        this.mousePos,
-        MAX_BACKGROUND_CIRCLE_RADIUS,
-        CIRCLE_COLOR
-      )
+      drawCircle(this.ctx, this.mousePos, MOUSE_CURSOR_RADIUS, CIRCLE_COLOR)
 
     this.updateText()
   }
