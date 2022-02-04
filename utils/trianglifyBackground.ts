@@ -214,12 +214,14 @@ export default class Background {
   private updateFrame = () => {
     this.updatePoints()
     this.updateCircles()
-    drawCircle(
-      this.ctx,
-      this.mousePos,
-      MAX_BACKGROUND_CIRCLE_RADIUS,
-      CIRCLE_COLOR
-    )
+
+    if (this.ctx)
+      drawCircle(
+        this.ctx,
+        this.mousePos,
+        MAX_BACKGROUND_CIRCLE_RADIUS,
+        CIRCLE_COLOR
+      )
 
     this.updateText()
   }
