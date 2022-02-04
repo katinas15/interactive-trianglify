@@ -14,6 +14,9 @@ interface Options {
   height: number
   cellSize: number
   variance: number
+  backgroundMovementSpeed: number
+  minBackgroundCircleSize: number
+  maxBackgroundCircleSize: number
   circleColor?: string
 }
 
@@ -102,6 +105,11 @@ export default class Background {
 
     this.updateFrame.bind(this)
     setInterval(this.updateFrame, FRAME_DELAY)
+  }
+
+  private setOpts = (opts: Options): void => {
+    this.opts = opts
+    this.initializePoints()
   }
 
   private initializePoints = () => {
