@@ -93,21 +93,25 @@ export default class Background {
   private mousePos = [0, 0]
 
   constructor(public opts: Options) {
-    this.points = generatePoints(opts)
+    this.initializePoints()
+    this.ctx = this.opts.canvas.getContext('2d')
+
+    this.handleClicks()
+    this.handleMouseMovement()
+    this.handleResize()
+
+    this.updateFrame.bind(this)
+    setInterval(this.updateFrame, FRAME_DELAY)
+  }
+
+  private initializePoints = () => {
+    this.points = generatePoints(this.opts)
     this.movementDirections = this.points.map(() => {
       return generateMovementDirection()
     })
     this.circleSizes = this.points.map(() => {
       return generateCircleSize()
     })
-
-    this.ctx = this.opts.canvas.getContext('2d')
-
-    this.handleClicks()
-    this.handleMouseMovement()
-
-    this.updateFrame.bind(this)
-    setInterval(this.updateFrame, FRAME_DELAY)
   }
 
   private handleClicks = () => {
@@ -127,6 +131,14 @@ export default class Background {
       setTimeout(() => {
         this.enableCallMouse = true
       }, FRAME_DELAY)
+    })
+  }
+
+  private handleResize = () => {
+    window.addEventListener('resize', () => {
+      this.opts.width = window.innerWidth
+      this.opts.height = window.innerHeight
+      this.initializePoints()
     })
   }
 

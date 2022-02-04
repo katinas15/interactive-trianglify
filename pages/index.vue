@@ -24,7 +24,7 @@ export default {
       height,
       canvas,
       cellSize: 110,
-      variance: 0,
+      variance: 1,
     })
   },
 }
