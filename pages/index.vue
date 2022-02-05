@@ -111,7 +111,7 @@
                 </v-row>
 
                 <v-row>
-                  <v-subheader>Variance</v-subheader>
+                  <v-subheader>Start Variance</v-subheader>
 
                   <v-slider
                     v-model="variance"
@@ -202,8 +202,18 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-
-              <v-btn text @click="xColors.push('#000000')"> Add color </v-btn>
+              <v-select
+                v-model="selectedPreset"
+                :items="presets"
+                label="Color Presets"
+                outlined
+                item-text="name"
+                item-value="colors"
+                @change="xColors = selectedPreset"
+              ></v-select>
+              <v-btn text class="mr-10" @click="xColors.push('#000000')">
+                Add color
+              </v-btn>
               <v-btn color="red" text @click="reset()"> Reset </v-btn>
               <v-btn color="blue darken-1" text @click="dialogOptions = false">
                 Close
@@ -225,6 +235,7 @@ const SPEED_RANGE = [-0.5, 0.5]
 const CIRCLE_SIZE = [2, 5]
 const CELLSIZE = 110
 const VARIANCE = 1
+const COLORS_WHITE_GREY = ['#FFFFFF', '#0D0D0D']
 const COLORS_DEUS_EX = [
   '#000000',
   '#0D0D0D',
@@ -239,7 +250,12 @@ const COLORS_DEUS_EX = [
   '#0D0D0D',
   '#000000',
 ]
-const X_COLORS = [...COLORS_DEUS_EX]
+const COLORS_VINTAGE = ['#FBF8F1', '#F7ECDE', '#E9DAC1', '#54BAB9']
+const X_COLORS = [
+  [...COLORS_DEUS_EX],
+  [...COLORS_WHITE_GREY],
+  [...COLORS_VINTAGE],
+]
 export default {
   props: {},
   data() {
@@ -262,9 +278,24 @@ export default {
       circleSize: CIRCLE_SIZE,
       cellSize: CELLSIZE,
       variance: VARIANCE,
-      xColors: [...X_COLORS],
+      xColors: X_COLORS[Math.floor(Math.random() * X_COLORS.length)],
       selectedColor: '#ffffff',
       background: {},
+      selectedPreset: null,
+      presets: [
+        {
+          name: 'White and Grey',
+          colors: COLORS_WHITE_GREY,
+        },
+        {
+          name: 'Deus Ex',
+          colors: COLORS_DEUS_EX,
+        },
+        {
+          name: 'Vintage',
+          colors: COLORS_VINTAGE,
+        },
+      ],
     }
   },
   computed: {
@@ -306,7 +337,7 @@ export default {
       this.circleSize = CIRCLE_SIZE
       this.cellSize = CELLSIZE
       this.variance = VARIANCE
-      this.xColors = [...X_COLORS]
+      this.xColors = [...X_COLORS[0]]
       this.updateBackground()
     },
   },
