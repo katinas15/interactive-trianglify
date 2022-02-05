@@ -33,7 +33,7 @@
                         single-line
                         type="number"
                         style="width: 60px"
-                        @change="$set(speedRange, 0, $event)"
+                        @input="$set(speedRange, 0, $event)"
                       ></v-text-field>
                     </template>
                     <template v-slot:append>
@@ -44,7 +44,7 @@
                         single-line
                         type="number"
                         style="width: 60px"
-                        @change="$set(speedRange, 0, $event)"
+                        @input="$set(speedRange, 1, $event)"
                       ></v-text-field>
                     </template>
                   </v-range-slider>
@@ -69,7 +69,7 @@
                         single-line
                         type="number"
                         style="width: 60px"
-                        @change="$set(circleSize, 0, $event)"
+                        @input="$set(circleSize, 0, $event)"
                       ></v-text-field>
                     </template>
                     <template v-slot:append>
@@ -80,7 +80,7 @@
                         single-line
                         type="number"
                         style="width: 60px"
-                        @change="$set(circleSize, 0, $event)"
+                        @input="$set(circleSize, 1, $event)"
                       ></v-text-field>
                     </template>
                   </v-range-slider>
@@ -105,7 +105,30 @@
                         single-line
                         type="number"
                         style="width: 60px"
-                        @change="$set(cellSize, 0, $event)"
+                      ></v-text-field>
+                    </template>
+                  </v-slider>
+                </v-row>
+
+                <v-row>
+                  <v-subheader>Variance</v-subheader>
+
+                  <v-slider
+                    v-model="variance"
+                    :max="MAX_VARIANCE"
+                    :min="MIN_VARIANCE"
+                    hide-details
+                    :step="STEP_SIZE"
+                    class="align-center"
+                  >
+                    <template v-slot:append>
+                      <v-text-field
+                        :value="variance"
+                        class="mt-0 pt-0"
+                        hide-details
+                        single-line
+                        type="number"
+                        style="width: 60px"
                       ></v-text-field>
                     </template>
                   </v-slider>
@@ -143,8 +166,10 @@ export default {
       MIN_CIRCLE_SPEED: -20,
       MAX_CIRCLE_SIZE: 30,
       MIN_CIRCLE_SIZE: 0,
-      MIN_CELL_SIZE: 0,
+      MIN_CELL_SIZE: 20,
       MAX_CELL_SIZE: 500,
+      MIN_VARIANCE: 0,
+      MAX_VARIANCE: 1,
       width: 0,
       height: 0,
       canvas: null,
