@@ -134,9 +134,65 @@
                   </v-slider>
                 </v-row>
 
-                <div class="mt-5 mb-5 ml-1">Colors (Click to edit)</div>
+                <v-row class="mt-n3">
+                  <v-subheader class="mt-2">Show Cursor</v-subheader>
+                  <v-checkbox v-model="showCursor"></v-checkbox>
+                </v-row>
+
+                <v-row class="mt-n6">
+                  <v-subheader class="mt-4">Circle Color</v-subheader>
+
+                  <v-dialog v-model="dialogCircle" max-width="400px">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-col>
+                        <v-btn
+                          :color="circleColor"
+                          class="ma-2"
+                          width="150px"
+                          @click="dialogCircle = true"
+                        >
+                          {{ circleColor }}
+                        </v-btn>
+                      </v-col>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                        <span class="text-h5">Color Picker</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-color-picker
+                            v-model="selectedCircleColor"
+                          ></v-color-picker>
+                        </v-container>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="red darken-1"
+                          text
+                          @click="dialogCircle = false"
+                        >
+                          Close
+                        </v-btn>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="
+                            circleColor = selectedCircleColor
+                            dialogCircle = false
+                          "
+                        >
+                          Save
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-row>
+
+                <div class="mt-3 mb-5 ml-1">Colors (Click to edit)</div>
                 <v-row :key="xColors.length">
-                  <v-dialog v-model="dialogColors" max-width="600px">
+                  <v-dialog v-model="dialogColors" max-width="400px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-col>
                         <v-btn
@@ -236,6 +292,7 @@ const SPEED_RANGE = [-0.5, 0.5]
 const CIRCLE_SIZE = [2, 5]
 const CELLSIZE = 110
 const VARIANCE = 1
+const CIRCLE_COLOR = '#000000'
 const COLORS_WHITE_GREY = ['#FFFFFF', '#0D0D0D']
 const COLORS_DEUS_EX = [
   '#000000',
@@ -258,6 +315,7 @@ const PRESETS = [
     name: 'White and Grey',
     xColors: COLORS_WHITE_GREY,
     circleSize: CIRCLE_SIZE,
+    // circleColor: 'A1A1A1',
   },
   {
     name: 'Deus Ex',
@@ -293,14 +351,18 @@ export default {
       canvas: null,
       dialogOptions: false,
       dialogColors: false,
+      dialogCircle: false,
       speedRange: SPEED_RANGE,
       circleSize: CIRCLE_SIZE,
       cellSize: CELLSIZE,
       variance: VARIANCE,
-      xColors: PRESETS[Math.floor(Math.random() * PRESETS.length)].xColors,
+      circleColor: CIRCLE_COLOR,
+      selectedCircleColor: CIRCLE_COLOR,
+      showCursor: true,
+      xColors: [],
       selectedColor: '#ffffff',
       background: {},
-      selectedPreset: null,
+      selectedPreset: PRESETS[Math.floor(Math.random() * PRESETS.length)],
       presets: PRESETS,
     }
   },
@@ -317,6 +379,8 @@ export default {
         cellSize: this.cellSize,
         variance: this.variance,
         xColors: this.xColors,
+        circleColor: this.circleColor,
+        showCursor: this.showCursor,
       }
     },
   },
@@ -333,15 +397,16 @@ export default {
     this.height = window.innerHeight
     this.canvas = document.querySelector('#bg')
     this.background = new Background(this.opts)
+    this.changePreset(this.selectedPreset)
   },
   methods: {
     changePreset(value) {
       this.xColors = value.xColors || this.xColors
       this.circleSize = value.circleSize || this.circleSize
+      if (value.circleColor) {
+        this.circleColor = value.circleColor
+      }
       this.updateBackground()
-      // this.speedRange = value.speedRange
-      // this.cellSize = value.cellSize
-      // this.variance = value.variance
     },
     updateBackground() {
       this.background.setOpts(this.opts)
@@ -351,7 +416,7 @@ export default {
       this.circleSize = CIRCLE_SIZE
       this.cellSize = CELLSIZE
       this.variance = VARIANCE
-      this.xColors = [...X_COLORS[0]]
+      this.xColors = PRESETS[Math.floor(Math.random() * PRESETS.length)].xColors
       this.updateBackground()
     },
   },

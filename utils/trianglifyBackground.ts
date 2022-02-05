@@ -4,7 +4,7 @@ const MOUSE_CURSOR_RADIUS = 5
 const FRAME_DELAY: number = 1000 / 30 // 30fps
 const CLICK_TEXT_OFFSET = 10
 const CLICK_TEXT_FONT = '14px Trebuchet MS'
-const CIRCLE_COLOR = '#000'
+const CLICK_TEXT_COLOR = '#000000'
 
 interface Options {
   canvas: HTMLCanvasElement
@@ -17,7 +17,8 @@ interface Options {
   minCircleSize: number
   maxCircleSize: number
   xColors: string[]
-  circleColor?: string
+  showCursor: boolean
+  circleColor: string
 }
 
 const generatePoints = (opts: Options) => {
@@ -186,7 +187,7 @@ export default class Background {
     })
 
     const localPoints = [...this.points]
-    if (this.mousePos) {
+    if (this.opts.showCursor && this.mousePos) {
       localPoints.push([this.mousePos[0], this.mousePos[1]])
     }
 
@@ -207,7 +208,7 @@ export default class Background {
         this.ctx,
         point,
         this.circleSizes[index],
-        this.opts.circleColor || CIRCLE_COLOR
+        this.opts.circleColor
       )
     })
   }
@@ -215,6 +216,7 @@ export default class Background {
   private updateText = () => {
     if (!this.clicked && this.ctx) {
       this.ctx.font = CLICK_TEXT_FONT
+      this.ctx.fillStyle = CLICK_TEXT_COLOR
       this.ctx.fillText(
         'Click!',
         this.mousePos[0] + CLICK_TEXT_OFFSET,
@@ -227,9 +229,14 @@ export default class Background {
     this.updatePoints()
     this.updateCircles()
 
-    if (this.ctx)
-      drawCircle(this.ctx, this.mousePos, MOUSE_CURSOR_RADIUS, CIRCLE_COLOR)
-
-    this.updateText()
+    if (this.ctx && this.opts.showCursor) {
+      drawCircle(
+        this.ctx,
+        this.mousePos,
+        MOUSE_CURSOR_RADIUS,
+        this.opts.circleColor
+      )
+      this.updateText()
+    }
   }
 }
