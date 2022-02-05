@@ -138,20 +138,21 @@
                 <v-row :key="xColors.length">
                   <v-dialog v-model="dialogColors" max-width="600px">
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        v-for="(color, index) in xColors"
-                        :key="'color' + index"
-                        col="3"
-                        :color="color"
-                        class="ma-2"
-                        width="150px"
-                        @click="
-                          selectedColor = { color, index }
-                          dialogColors = true
-                        "
-                      >
-                        {{ index }}: {{ color }}
-                      </v-btn>
+                      <v-col>
+                        <v-btn
+                          v-for="(color, index) in xColors"
+                          :key="'color' + index"
+                          :color="color"
+                          class="ma-2"
+                          width="150px"
+                          @click="
+                            selectedColor = { color, index }
+                            dialogColors = true
+                          "
+                        >
+                          {{ index }}: {{ color }}
+                        </v-btn>
+                      </v-col>
                     </template>
                     <v-card>
                       <v-card-title>
