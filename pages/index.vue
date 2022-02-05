@@ -15,6 +15,38 @@
             <v-card-text>
               <v-container>
                 <v-row>
+                  <v-range-slider
+                    v-model="speedRange"
+                    :max="MAX_CIRCLE_SPEED"
+                    :min="MIN_CIRCLE_SPEED"
+                    hide-details
+                    class="align-center"
+                  >
+                    <template v-slot:prepend>
+                      <v-text-field
+                        :value="speedRange[0]"
+                        class="mt-0 pt-0"
+                        hide-details
+                        single-line
+                        type="number"
+                        style="width: 60px"
+                        @change="$set(speedRange, 0, $event)"
+                      ></v-text-field>
+                    </template>
+                    <template v-slot:append>
+                      <v-text-field
+                        :value="speedRange[1]"
+                        class="mt-0 pt-0"
+                        hide-details
+                        single-line
+                        type="number"
+                        style="width: 60px"
+                        @change="$set(speedRange, 0, $event)"
+                      ></v-text-field>
+                    </template>
+                  </v-range-slider>
+                </v-row>
+                <v-row>
                   <v-slider
                     v-model="opts.backgroundMovementSpeed"
                     step="10"
@@ -41,24 +73,38 @@
 
 <script>
 import Background from '../utils/trianglifyBackground.ts'
+
 export default {
   props: {},
   data() {
     return {
+      MAX_CIRCLE_SPEED: 20,
+      MIN_CIRCLE_SPEED: -20,
+      width: 0,
+      height: 0,
+      canvas: null,
       dialog: false,
-      opts: {
-        width: 0,
-        height: 0,
-        canvas: null,
-        minCircleSpeed: -0.5,
-        maxCircleSpeed: 0.5,
-        minCircleSize: 2,
-        maxCircleSize: 5,
-        cellSize: 110,
-        variance: 1,
-      },
-      backgroud: {},
+      speedRange: [-0.5, 0.5],
+      circleSize: [2, 5],
+      cellSize: 110,
+      variance: 1,
+      background: {},
     }
+  },
+  computed: {
+    opts() {
+      return {
+        width: this.width,
+        height: this.height,
+        canvas: this.canvas,
+        minCircleSpeed: this.speedRange[0],
+        maxCircleSpeed: this.speedRange[1],
+        minCircleSize: this.circleSize[0],
+        maxCircleSize: this.circleSize[1],
+        cellSize: this.cellSize,
+        variance: this.variance,
+      }
+    },
   },
   watch: {
     opts: {
@@ -69,9 +115,9 @@ export default {
     },
   },
   mounted() {
-    this.opts.width = window.innerWidth
-    this.opts.height = window.innerHeight
-    this.opts.canvas = document.querySelector('#bg')
+    this.width = window.innerWidth
+    this.height = window.innerHeight
+    this.canvas = document.querySelector('#bg')
     this.background = new Background(this.opts)
   },
   methods: {
