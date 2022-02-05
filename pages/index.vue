@@ -414,7 +414,7 @@ export default {
       this.circleSize = CIRCLE_SIZE
       this.cellSize = CELLSIZE
       this.variance = VARIANCE
-      this.xColors = PRESETS[Math.floor(Math.random() * PRESETS.length)].xColors
+      this.changePreset(PRESETS[Math.floor(Math.random() * PRESETS.length)])
       this.updateBackground()
     },
   },
