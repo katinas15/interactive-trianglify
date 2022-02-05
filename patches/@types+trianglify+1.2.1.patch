@@ -1,0 +1,30 @@
+diff --git a/node_modules/@types/trianglify/index.d.ts b/node_modules/@types/trianglify/index.d.ts
+index 420177a..fb95044 100644
+--- a/node_modules/@types/trianglify/index.d.ts
++++ b/node_modules/@types/trianglify/index.d.ts
+@@ -17,7 +17,7 @@ declare namespace trianglify {
+         /** Seed for the RNG */
+         seed?: number | string | null | undefined;
+         /** X color stops */
+-        x_colors?: false | string | string[] | undefined;
++        xColors?: false | string | string[] | undefined;
+         /** Y color stops */
+         y_colors?: false | string | string[] | undefined;
+         /** Color space used for gradient construction & interpolation */
+@@ -27,7 +27,7 @@ declare namespace trianglify {
+         /** Width of stroke. Defaults to 1.51 to fix an issue with canvas antialiasing. */
+         stroke_width?: number | undefined;
+         /** An array of [x,y] coordinates to trianglulate. Defaults to undefined, and points are generated. */
+-        points?: number[] | undefined;
++        points?: number[][] | undefined;
+     }
+ 
+     interface SVGOptions {
+@@ -38,6 +38,7 @@ declare namespace trianglify {
+         opts: Options;
+         polys: any;
+         svg(opts?: SVGOptions): SVGElement;
++        toCanvas(canvas?: HTMLCanvasElement): HTMLCanvasElement;
+         canvas(canvas?: HTMLCanvasElement): HTMLCanvasElement;
+         png(): string;
+     }

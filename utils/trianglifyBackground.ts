@@ -193,11 +193,7 @@ export default class Background {
     const pattern = trianglify({
       width: this.opts.width,
       height: this.opts.height,
-      // xColors: ['#000000', '#0C0C0C', '#000000'],
       xColors: this.opts.xColors,
-
-      // xColors: ['#fff69f', '#fdd870', '#d0902f', '#a15501', '#351409'],
-      // xColors: ['#C78B06', '#C78B06', '#5D430A', '#DED765', '#310D01'],
       points: localPoints,
     })
 
