@@ -135,12 +135,13 @@
                 </v-row>
 
                 <div class="mt-5 mb-5 ml-1">Colors (Click to edit)</div>
-                <v-row>
+                <v-row :key="xColors.length">
                   <v-dialog v-model="dialogColors" max-width="600px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         v-for="(color, index) in xColors"
-                        :key="index"
+                        :key="'color' + index"
+                        col="3"
                         :color="color"
                         class="ma-2"
                         width="150px"
@@ -176,7 +177,7 @@
                           color="red darken-1"
                           text
                           @click="
-                            xColors.pop(selectedColor.index)
+                            xColors.splice(selectedColor.index, 1)
                             dialogColors = false
                           "
                         >
@@ -200,6 +201,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
+              <v-btn text @click="xColors.push('#000000')"> Add color </v-btn>
+              <v-btn color="red" text @click="reset()"> Reset </v-btn>
               <v-btn color="blue darken-1" text @click="dialogOptions = false">
                 Close
               </v-btn>
@@ -220,20 +223,7 @@ const SPEED_RANGE = [-0.5, 0.5]
 const CIRCLE_SIZE = [2, 5]
 const CELLSIZE = 110
 const VARIANCE = 1
-const X_COLORS = [
-  '#000000',
-  '#0D0D0D',
-  '#351409',
-  '#a15501',
-  '#d0902f',
-  '#fff69f',
-  '#fdd870',
-  '#d0902f',
-  '#a15501',
-  '#351409',
-  '#0D0D0D',
-  '#000000',
-]
+const X_COLORS = ['#000000', '#0D0D0D', '#351409']
 export default {
   props: {},
   data() {
@@ -256,7 +246,7 @@ export default {
       circleSize: CIRCLE_SIZE,
       cellSize: CELLSIZE,
       variance: VARIANCE,
-      xColors: X_COLORS,
+      xColors: [...X_COLORS],
       selectedColor: '#ffffff',
       background: {},
     }
@@ -294,6 +284,14 @@ export default {
   methods: {
     updateBackground() {
       this.background.setOpts(this.opts)
+    },
+    reset() {
+      this.speedRange = SPEED_RANGE
+      this.circleSize = CIRCLE_SIZE
+      this.cellSize = CELLSIZE
+      this.variance = VARIANCE
+      this.xColors = [...X_COLORS]
+      this.updateBackground()
     },
   },
 }
