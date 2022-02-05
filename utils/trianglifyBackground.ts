@@ -56,12 +56,16 @@ const generatePoints = (opts: Options) => {
   return points
 }
 
+const getRandomArbitrary = (min: number, max: number) => {
+  return Math.random() * (max - min) + min
+}
+
 const generateMovementDirection = (
   minCircleSpeed: number,
   maxCircleSpeed: number
 ) => {
-  const x = (Math.random() * minCircleSpeed - 1) * maxCircleSpeed
-  const y = (Math.random() * minCircleSpeed - 1) * maxCircleSpeed
+  const x = getRandomArbitrary(minCircleSpeed, maxCircleSpeed)
+  const y = getRandomArbitrary(minCircleSpeed, maxCircleSpeed)
   return [x, y]
 }
 
