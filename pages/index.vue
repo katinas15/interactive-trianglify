@@ -85,6 +85,31 @@
                     </template>
                   </v-range-slider>
                 </v-row>
+
+                <v-row>
+                  <v-subheader>Cell Size</v-subheader>
+
+                  <v-slider
+                    v-model="cellSize"
+                    :max="MAX_CELL_SIZE"
+                    :min="MIN_CELL_SIZE"
+                    hide-details
+                    :step="STEP_SIZE"
+                    class="align-center"
+                  >
+                    <template v-slot:append>
+                      <v-text-field
+                        :value="cellSize"
+                        class="mt-0 pt-0"
+                        hide-details
+                        single-line
+                        type="number"
+                        style="width: 60px"
+                        @change="$set(cellSize, 0, $event)"
+                      ></v-text-field>
+                    </template>
+                  </v-slider>
+                </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -118,6 +143,8 @@ export default {
       MIN_CIRCLE_SPEED: -20,
       MAX_CIRCLE_SIZE: 30,
       MIN_CIRCLE_SIZE: 0,
+      MIN_CELL_SIZE: 0,
+      MAX_CELL_SIZE: 500,
       width: 0,
       height: 0,
       canvas: null,
