@@ -15,11 +15,14 @@
             <v-card-text>
               <v-container>
                 <v-row>
+                  <v-subheader>Circle Speed</v-subheader>
+
                   <v-range-slider
                     v-model="speedRange"
                     :max="MAX_CIRCLE_SPEED"
                     :min="MIN_CIRCLE_SPEED"
                     hide-details
+                    :step="STEP_SIZE"
                     class="align-center"
                   >
                     <template v-slot:prepend>
@@ -74,20 +77,25 @@
 <script>
 import Background from '../utils/trianglifyBackground.ts'
 
+const SPEED_RANGE = [-0.5, 0.5]
+const CIRCLE_SIZE = [2, 5]
+const CELLSIZE = 110
+const VARIANCE = 1
 export default {
   props: {},
   data() {
     return {
+      STEP_SIZE: 0.1,
       MAX_CIRCLE_SPEED: 20,
       MIN_CIRCLE_SPEED: -20,
       width: 0,
       height: 0,
       canvas: null,
       dialog: false,
-      speedRange: [-0.5, 0.5],
-      circleSize: [2, 5],
-      cellSize: 110,
-      variance: 1,
+      speedRange: SPEED_RANGE,
+      circleSize: CIRCLE_SIZE,
+      cellSize: CELLSIZE,
+      variance: VARIANCE,
       background: {},
     }
   },
