@@ -49,13 +49,41 @@
                     </template>
                   </v-range-slider>
                 </v-row>
+
                 <v-row>
-                  <v-slider
-                    v-model="opts.backgroundMovementSpeed"
-                    step="10"
-                    thumb-label
-                    ticks
-                  ></v-slider>
+                  <v-subheader>Circle Size</v-subheader>
+
+                  <v-range-slider
+                    v-model="circleSize"
+                    :max="MAX_CIRCLE_SIZE"
+                    :min="MIN_CIRCLE_SIZE"
+                    hide-details
+                    :step="STEP_SIZE"
+                    class="align-center"
+                  >
+                    <template v-slot:prepend>
+                      <v-text-field
+                        :value="circleSize[0]"
+                        class="mt-0 pt-0"
+                        hide-details
+                        single-line
+                        type="number"
+                        style="width: 60px"
+                        @change="$set(circleSize, 0, $event)"
+                      ></v-text-field>
+                    </template>
+                    <template v-slot:append>
+                      <v-text-field
+                        :value="circleSize[1]"
+                        class="mt-0 pt-0"
+                        hide-details
+                        single-line
+                        type="number"
+                        style="width: 60px"
+                        @change="$set(circleSize, 0, $event)"
+                      ></v-text-field>
+                    </template>
+                  </v-range-slider>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -88,6 +116,8 @@ export default {
       STEP_SIZE: 0.1,
       MAX_CIRCLE_SPEED: 20,
       MIN_CIRCLE_SPEED: -20,
+      MAX_CIRCLE_SIZE: 30,
+      MIN_CIRCLE_SIZE: 0,
       width: 0,
       height: 0,
       canvas: null,
