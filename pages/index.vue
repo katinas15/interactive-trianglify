@@ -206,10 +206,11 @@
                 v-model="selectedPreset"
                 :items="presets"
                 label="Color Presets"
-                outlined
                 item-text="name"
-                item-value="colors"
-                @change="xColors = selectedPreset"
+                return-object
+                single-line
+                class="mr-5"
+                @change="changePreset"
               ></v-select>
               <v-btn text class="mr-10" @click="xColors.push('#000000')">
                 Add color
@@ -251,10 +252,28 @@ const COLORS_DEUS_EX = [
   '#000000',
 ]
 const COLORS_VINTAGE = ['#FBF8F1', '#F7ECDE', '#E9DAC1', '#54BAB9']
-const X_COLORS = [
-  [...COLORS_DEUS_EX],
-  [...COLORS_WHITE_GREY],
-  [...COLORS_VINTAGE],
+const COLORS_NATURE = ['#D3ECA7', '#A1B57D', '#B33030', '#19282F']
+const PRESETS = [
+  {
+    name: 'White and Grey',
+    xColors: COLORS_WHITE_GREY,
+    circleSize: CIRCLE_SIZE,
+  },
+  {
+    name: 'Deus Ex',
+    xColors: COLORS_DEUS_EX,
+    circleSize: CIRCLE_SIZE,
+  },
+  {
+    name: 'Vintage',
+    xColors: COLORS_VINTAGE,
+    circleSize: [0, 0],
+  },
+  {
+    name: 'Nature',
+    xColors: COLORS_NATURE,
+    circleSize: [0, 0],
+  },
 ]
 export default {
   props: {},
@@ -278,24 +297,11 @@ export default {
       circleSize: CIRCLE_SIZE,
       cellSize: CELLSIZE,
       variance: VARIANCE,
-      xColors: X_COLORS[Math.floor(Math.random() * X_COLORS.length)],
+      xColors: PRESETS[Math.floor(Math.random() * PRESETS.length)].xColors,
       selectedColor: '#ffffff',
       background: {},
       selectedPreset: null,
-      presets: [
-        {
-          name: 'White and Grey',
-          colors: COLORS_WHITE_GREY,
-        },
-        {
-          name: 'Deus Ex',
-          colors: COLORS_DEUS_EX,
-        },
-        {
-          name: 'Vintage',
-          colors: COLORS_VINTAGE,
-        },
-      ],
+      presets: PRESETS,
     }
   },
   computed: {
@@ -329,6 +335,14 @@ export default {
     this.background = new Background(this.opts)
   },
   methods: {
+    changePreset(value) {
+      this.xColors = value.xColors || this.xColors
+      this.circleSize = value.circleSize || this.circleSize
+      this.updateBackground()
+      // this.speedRange = value.speedRange
+      // this.cellSize = value.cellSize
+      // this.variance = value.variance
+    },
     updateBackground() {
       this.background.setOpts(this.opts)
     },
