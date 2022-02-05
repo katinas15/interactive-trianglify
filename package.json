@@ -13,7 +13,7 @@
     "lint": "yarn lint:js && yarn lint:style && yarn lint:prettier",
     "lintfix": "prettier --write --list-different . && yarn lint:js --fix && yarn lint:style --fix",
     "postinstall": "patch-package",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build && npm run generate"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
