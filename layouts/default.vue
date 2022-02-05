@@ -3,8 +3,7 @@
     <Nuxt />
 
     <v-footer app>
-      <span
-        >Laimonas Janutėnas - 2022 |
+      <span>
         <a href="https://github.com/katinas15/interactive-trianglify"
           >Source Code</a
         >
