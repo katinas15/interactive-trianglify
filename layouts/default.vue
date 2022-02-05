@@ -3,7 +3,7 @@
     <Nuxt />
 
     <v-footer :absolute="!fixed" app>
-      <span>&copy; Laimonas Janutėnas - {{ new Date().getFullYear() }}</span>
+      <span>Laimonas Janutėnas - 2022</span>
     </v-footer>
   </v-app>
 </template>

@@ -2,7 +2,7 @@
   <div>
     <div class="content">
       <v-row class="mt-3 ml-2">
-        <v-dialog v-model="dialog" max-width="600px">
+        <v-dialog v-model="dialogOptions" max-width="600px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn x-small dark v-bind="attrs" v-on="on">
               Background Options
@@ -134,22 +134,73 @@
                   </v-slider>
                 </v-row>
 
+                <div class="mt-5 mb-5 ml-1">Colors (Click to edit)</div>
                 <v-row>
-                  <v-btn
-                    v-for="(color, index) in xColors"
-                    :key="index"
-                    :color="color"
-                    class="ma-2"
-                    width="150px"
-                  >
-                    {{ index }}: {{ color }}
-                  </v-btn>
+                  <v-dialog v-model="dialogColors" max-width="600px">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        v-for="(color, index) in xColors"
+                        :key="index"
+                        :color="color"
+                        class="ma-2"
+                        width="150px"
+                        @click="
+                          selectedColor = { color, index }
+                          dialogColors = true
+                        "
+                      >
+                        {{ index }}: {{ color }}
+                      </v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                        <span class="text-h5">Color Picker</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-color-picker
+                            v-model="selectedColor.color"
+                          ></v-color-picker>
+                        </v-container>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="red darken-1"
+                          text
+                          @click="dialogColors = false"
+                        >
+                          Close
+                        </v-btn>
+                        <v-btn
+                          color="red darken-1"
+                          text
+                          @click="
+                            xColors.pop(selectedColor.index)
+                            dialogColors = false
+                          "
+                        >
+                          Remove
+                        </v-btn>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="
+                            xColors[selectedColor.index] = selectedColor.color
+                            dialogColors = false
+                          "
+                        >
+                          Save
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">
+              <v-btn color="blue darken-1" text @click="dialogOptions = false">
                 Close
               </v-btn>
             </v-card-actions>
@@ -199,12 +250,14 @@ export default {
       width: 0,
       height: 0,
       canvas: null,
-      dialog: false,
+      dialogOptions: false,
+      dialogColors: false,
       speedRange: SPEED_RANGE,
       circleSize: CIRCLE_SIZE,
       cellSize: CELLSIZE,
       variance: VARIANCE,
       xColors: X_COLORS,
+      selectedColor: '#ffffff',
       background: {},
     }
   },
