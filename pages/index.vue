@@ -315,7 +315,6 @@ const PRESETS = [
     name: 'White and Grey',
     xColors: COLORS_WHITE_GREY,
     circleSize: CIRCLE_SIZE,
-    // circleColor: 'A1A1A1',
   },
   {
     name: 'Deus Ex',
@@ -362,8 +361,10 @@ export default {
       xColors: [],
       selectedColor: '#ffffff',
       background: {},
-      selectedPreset: PRESETS[Math.floor(Math.random() * PRESETS.length)],
-      presets: PRESETS,
+      selectedPreset: {
+        ...PRESETS[Math.floor(Math.random() * PRESETS.length)],
+      },
+      presets: [...PRESETS],
     }
   },
   computed: {
@@ -403,9 +404,6 @@ export default {
     changePreset(value) {
       this.xColors = value.xColors || this.xColors
       this.circleSize = value.circleSize || this.circleSize
-      if (value.circleColor) {
-        this.circleColor = value.circleColor
-      }
       this.updateBackground()
     },
     updateBackground() {
