@@ -202,6 +202,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
+
               <v-btn text @click="xColors.push('#000000')"> Add color </v-btn>
               <v-btn color="red" text @click="reset()"> Reset </v-btn>
               <v-btn color="blue darken-1" text @click="dialogOptions = false">
@@ -224,7 +225,21 @@ const SPEED_RANGE = [-0.5, 0.5]
 const CIRCLE_SIZE = [2, 5]
 const CELLSIZE = 110
 const VARIANCE = 1
-const X_COLORS = ['#000000', '#0D0D0D', '#351409']
+const COLORS_DEUS_EX = [
+  '#000000',
+  '#0D0D0D',
+  '#351409',
+  '#a15501',
+  '#d0902f',
+  '#fff69f',
+  '#fdd870',
+  '#d0902f',
+  '#a15501',
+  '#351409',
+  '#0D0D0D',
+  '#000000',
+]
+const X_COLORS = [...COLORS_DEUS_EX]
 export default {
   props: {},
   data() {
