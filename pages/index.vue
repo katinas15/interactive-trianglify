@@ -133,6 +133,18 @@
                     </template>
                   </v-slider>
                 </v-row>
+
+                <v-row>
+                  <v-btn
+                    v-for="(color, index) in xColors"
+                    :key="index"
+                    :color="color"
+                    class="ma-2"
+                    width="150px"
+                  >
+                    {{ index }}: {{ color }}
+                  </v-btn>
+                </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -157,6 +169,20 @@ const SPEED_RANGE = [-0.5, 0.5]
 const CIRCLE_SIZE = [2, 5]
 const CELLSIZE = 110
 const VARIANCE = 1
+const X_COLORS = [
+  '#000000',
+  '#0D0D0D',
+  '#351409',
+  '#a15501',
+  '#d0902f',
+  '#fff69f',
+  '#fdd870',
+  '#d0902f',
+  '#a15501',
+  '#351409',
+  '#0D0D0D',
+  '#000000',
+]
 export default {
   props: {},
   data() {
@@ -178,6 +204,7 @@ export default {
       circleSize: CIRCLE_SIZE,
       cellSize: CELLSIZE,
       variance: VARIANCE,
+      xColors: X_COLORS,
       background: {},
     }
   },
@@ -193,6 +220,7 @@ export default {
         maxCircleSize: this.circleSize[1],
         cellSize: this.cellSize,
         variance: this.variance,
+        xColors: this.xColors,
       }
     },
   },

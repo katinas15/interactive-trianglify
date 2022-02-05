@@ -16,6 +16,7 @@ interface Options {
   maxCircleSpeed: number
   minCircleSize: number
   maxCircleSize: number
+  xColors: string[]
   circleColor?: string
 }
 
@@ -193,20 +194,7 @@ export default class Background {
       width: this.opts.width,
       height: this.opts.height,
       // xColors: ['#000000', '#0C0C0C', '#000000'],
-      xColors: [
-        '#000000',
-        '#0D0D0D',
-        '#351409',
-        '#a15501',
-        '#d0902f',
-        '#fff69f',
-        '#fdd870',
-        '#d0902f',
-        '#a15501',
-        '#351409',
-        '#0D0D0D',
-        '#000000',
-      ],
+      xColors: this.opts.xColors,
 
       // xColors: ['#fff69f', '#fdd870', '#d0902f', '#a15501', '#351409'],
       // xColors: ['#C78B06', '#C78B06', '#5D430A', '#DED765', '#310D01'],
