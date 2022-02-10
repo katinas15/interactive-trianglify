@@ -1,5 +1,5 @@
 <template>
-  <InteractiveTrianglify :presets="presets" />
+  <InteractiveTrianglify :presets="presets" :randomizedPresets="presets" />
 </template>
 
 <script>

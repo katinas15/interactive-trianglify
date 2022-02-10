@@ -305,6 +305,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    randomizedPresets: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -335,7 +339,9 @@ export default {
         xColors: [],
         selectedColor: '#ffffff',
         selectedPreset: {
-          ...this.presets[Math.floor(Math.random() * this.presets.length)],
+          ...this.randomizedPresets[
+            Math.floor(Math.random() * this.randomizedPresets.length)
+          ],
         },
       },
     }
