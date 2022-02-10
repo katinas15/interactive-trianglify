@@ -2,7 +2,7 @@
   <div>
     <div class="content">
       <v-row class="mt-3 ml-2">
-        <v-dialog v-model="dialogOptions" max-width="600px">
+        <v-dialog v-model="opts.dialogOptions" max-width="600px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn x-small dark v-bind="attrs" v-on="on">
               Background Options
@@ -18,33 +18,33 @@
                   <v-subheader>Circle Speed</v-subheader>
 
                   <v-range-slider
-                    v-model="speedRange"
-                    :max="MAX_CIRCLE_SPEED"
-                    :min="MIN_CIRCLE_SPEED"
+                    v-model="opts.speedRange"
+                    :max="opts.MAX_CIRCLE_SPEED"
+                    :min="opts.MIN_CIRCLE_SPEED"
                     hide-details
-                    :step="STEP_SIZE"
+                    :step="opts.STEP_SIZE"
                     class="align-center"
                   >
                     <template v-slot:prepend>
                       <v-text-field
-                        :value="speedRange[0]"
+                        :value="opts.speedRange[0]"
                         class="mt-0 pt-0"
                         hide-details
                         single-line
                         type="number"
                         style="width: 60px"
-                        @input="$set(speedRange, 0, $event)"
+                        @input="$set(opts.speedRange, 0, $event)"
                       ></v-text-field>
                     </template>
                     <template v-slot:append>
                       <v-text-field
-                        :value="speedRange[1]"
+                        :value="opts.speedRange[1]"
                         class="mt-0 pt-0"
                         hide-details
                         single-line
                         type="number"
                         style="width: 60px"
-                        @input="$set(speedRange, 1, $event)"
+                        @input="$set(opts.speedRange, 1, $event)"
                       ></v-text-field>
                     </template>
                   </v-range-slider>
@@ -54,33 +54,33 @@
                   <v-subheader>Circle Size</v-subheader>
 
                   <v-range-slider
-                    v-model="circleSize"
-                    :max="MAX_CIRCLE_SIZE"
-                    :min="MIN_CIRCLE_SIZE"
+                    v-model="opts.circleSize"
+                    :max="opts.MAX_CIRCLE_SIZE"
+                    :min="opts.MIN_CIRCLE_SIZE"
                     hide-details
-                    :step="STEP_SIZE"
+                    :step="opts.STEP_SIZE"
                     class="align-center"
                   >
                     <template v-slot:prepend>
                       <v-text-field
-                        :value="circleSize[0]"
+                        :value="opts.circleSize[0]"
                         class="mt-0 pt-0"
                         hide-details
                         single-line
                         type="number"
                         style="width: 60px"
-                        @input="$set(circleSize, 0, $event)"
+                        @input="$set(opts.circleSize, 0, $event)"
                       ></v-text-field>
                     </template>
                     <template v-slot:append>
                       <v-text-field
-                        :value="circleSize[1]"
+                        :value="opts.circleSize[1]"
                         class="mt-0 pt-0"
                         hide-details
                         single-line
                         type="number"
                         style="width: 60px"
-                        @input="$set(circleSize, 1, $event)"
+                        @input="$set(opts.circleSize, 1, $event)"
                       ></v-text-field>
                     </template>
                   </v-range-slider>
@@ -90,16 +90,16 @@
                   <v-subheader>Cell Size</v-subheader>
 
                   <v-slider
-                    v-model="cellSize"
-                    :max="MAX_CELL_SIZE"
-                    :min="MIN_CELL_SIZE"
+                    v-model="opts.cellSize"
+                    :max="opts.MAX_CELL_SIZE"
+                    :min="opts.MIN_CELL_SIZE"
                     hide-details
-                    :step="STEP_SIZE"
+                    :step="opts.STEP_SIZE"
                     class="align-center"
                   >
                     <template v-slot:append>
                       <v-text-field
-                        :value="cellSize"
+                        :value="opts.cellSize"
                         class="mt-0 pt-0"
                         hide-details
                         single-line
@@ -114,16 +114,16 @@
                   <v-subheader>Start Variance</v-subheader>
 
                   <v-slider
-                    v-model="variance"
-                    :max="MAX_VARIANCE"
-                    :min="MIN_VARIANCE"
+                    v-model="opts.variance"
+                    :max="opts.MAX_VARIANCE"
+                    :min="opts.MIN_VARIANCE"
                     hide-details
-                    :step="STEP_SIZE"
+                    :step="opts.STEP_SIZE"
                     class="align-center"
                   >
                     <template v-slot:append>
                       <v-text-field
-                        :value="variance"
+                        :value="opts.variance"
                         class="mt-0 pt-0"
                         hide-details
                         single-line
@@ -136,22 +136,22 @@
 
                 <v-row class="mt-n3">
                   <v-subheader class="mt-2">Show Cursor</v-subheader>
-                  <v-checkbox v-model="showCursor"></v-checkbox>
+                  <v-checkbox v-model="opts.showCursor"></v-checkbox>
                 </v-row>
 
                 <v-row class="mt-n6">
                   <v-subheader class="mt-4">Circle Color</v-subheader>
 
-                  <v-dialog v-model="dialogCircle" max-width="400px">
+                  <v-dialog v-model="opts.dialogCircle" max-width="400px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-col>
                         <v-btn
-                          :color="circleColor"
+                          :color="opts.circleColor"
                           class="ma-2"
                           width="150px"
-                          @click="dialogCircle = true"
+                          @click="opts.dialogCircle = true"
                         >
-                          {{ circleColor }}
+                          {{ opts.circleColor }}
                         </v-btn>
                       </v-col>
                     </template>
@@ -162,7 +162,7 @@
                       <v-card-text>
                         <v-container>
                           <v-color-picker
-                            v-model="selectedCircleColor"
+                            v-model="opts.selectedCircleColor"
                           ></v-color-picker>
                         </v-container>
                       </v-card-text>
@@ -171,7 +171,7 @@
                         <v-btn
                           color="red darken-1"
                           text
-                          @click="dialogCircle = false"
+                          @click="opts.dialogCircle = false"
                         >
                           Close
                         </v-btn>
@@ -179,8 +179,8 @@
                           color="blue darken-1"
                           text
                           @click="
-                            circleColor = selectedCircleColor
-                            dialogCircle = false
+                            opts.circleColor = opts.selectedCircleColor
+                            opts.dialogCircle = false
                           "
                         >
                           Save
@@ -191,19 +191,19 @@
                 </v-row>
 
                 <div class="mt-3 mb-5 ml-1">Colors (Click to edit)</div>
-                <v-row :key="xColors.length">
-                  <v-dialog v-model="dialogColors" max-width="400px">
+                <v-row :key="opts.xColors.length">
+                  <v-dialog v-model="opts.dialogColors" max-width="400px">
                     <template v-slot:activator="{ on, attrs }">
                       <v-col>
                         <v-btn
-                          v-for="(color, index) in xColors"
+                          v-for="(color, index) in opts.xColors"
                           :key="'color' + index"
                           :color="color"
                           class="ma-2"
                           width="150px"
                           @click="
-                            selectedColor = { color, index }
-                            dialogColors = true
+                            opts.selectedColor = { color, index }
+                            opts.dialogColors = true
                           "
                         >
                           {{ index }}: {{ color }}
@@ -217,7 +217,7 @@
                       <v-card-text>
                         <v-container>
                           <v-color-picker
-                            v-model="selectedColor.color"
+                            v-model="opts.selectedColor.color"
                           ></v-color-picker>
                         </v-container>
                       </v-card-text>
@@ -226,7 +226,7 @@
                         <v-btn
                           color="red darken-1"
                           text
-                          @click="dialogColors = false"
+                          @click="opts.dialogColors = false"
                         >
                           Close
                         </v-btn>
@@ -234,8 +234,8 @@
                           color="red darken-1"
                           text
                           @click="
-                            xColors.splice(selectedColor.index, 1)
-                            dialogColors = false
+                            opts.xColors.splice(opts.selectedColor.index, 1)
+                            opts.dialogColors = false
                           "
                         >
                           Remove
@@ -244,8 +244,9 @@
                           color="blue darken-1"
                           text
                           @click="
-                            xColors[selectedColor.index] = selectedColor.color
-                            dialogColors = false
+                            opts.xColors[opts.selectedColor.index] =
+                              opts.selectedColor.color
+                            opts.dialogColors = false
                           "
                         >
                           Save
@@ -259,7 +260,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-select
-                v-model="selectedPreset"
+                v-model="opts.selectedPreset"
                 :items="presets"
                 label="Color Presets"
                 item-text="name"
@@ -268,11 +269,15 @@
                 class="mr-5"
                 @change="changePreset"
               ></v-select>
-              <v-btn text class="mr-10" @click="xColors.push('#000000')">
+              <v-btn text class="mr-10" @click="opts.xColors.push('#000000')">
                 Add color
               </v-btn>
               <v-btn color="red" text @click="reset()"> Reset </v-btn>
-              <v-btn color="blue darken-1" text @click="dialogOptions = false">
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="opts.dialogOptions = false"
+              >
                 Close
               </v-btn>
             </v-card-actions>
@@ -303,79 +308,92 @@ export default {
   },
   data() {
     return {
-      STEP_SIZE: 0.1,
-      MAX_CIRCLE_SPEED: 20,
-      MIN_CIRCLE_SPEED: -20,
-      MAX_CIRCLE_SIZE: 30,
-      MIN_CIRCLE_SIZE: 0,
-      MIN_CELL_SIZE: 20,
-      MAX_CELL_SIZE: 500,
-      MIN_VARIANCE: 0,
-      MAX_VARIANCE: 1,
-      width: 0,
-      height: 0,
-      canvas: null,
-      dialogOptions: false,
-      dialogColors: false,
-      dialogCircle: false,
-      speedRange: SPEED_RANGE,
-      circleSize: CIRCLE_SIZE,
-      cellSize: CELLSIZE,
-      variance: VARIANCE,
-      circleColor: CIRCLE_COLOR,
-      selectedCircleColor: CIRCLE_COLOR,
-      showCursor: true,
-      xColors: [],
-      selectedColor: '#ffffff',
       background: {},
-      selectedPreset: {
-        ...this.presets[Math.floor(Math.random() * this.presets.length)],
+      opts: {
+        STEP_SIZE: 0.1,
+        MAX_CIRCLE_SPEED: 20,
+        MIN_CIRCLE_SPEED: -20,
+        MAX_CIRCLE_SIZE: 30,
+        MIN_CIRCLE_SIZE: 0,
+        MIN_CELL_SIZE: 20,
+        MAX_CELL_SIZE: 500,
+        MIN_VARIANCE: 0,
+        MAX_VARIANCE: 1,
+        width: 0,
+        height: 0,
+        canvas: null,
+        dialogOptions: false,
+        dialogColors: false,
+        dialogCircle: false,
+        speedRange: SPEED_RANGE,
+        circleSize: CIRCLE_SIZE,
+        cellSize: CELLSIZE,
+        variance: VARIANCE,
+        circleColor: CIRCLE_COLOR,
+        selectedCircleColor: CIRCLE_COLOR,
+        showCursor: true,
+        xColors: [],
+        selectedColor: '#ffffff',
+        selectedPreset: {
+          ...this.presets[Math.floor(Math.random() * this.presets.length)],
+        },
       },
     }
   },
   computed: {
-    opts() {
+    computedOpts() {
       return {
-        width: this.width,
-        height: this.height,
-        canvas: this.canvas,
-        minCircleSpeed: this.speedRange[0],
-        maxCircleSpeed: this.speedRange[1],
-        minCircleSize: this.circleSize[0],
-        maxCircleSize: this.circleSize[1],
-        cellSize: this.cellSize,
-        variance: this.variance,
-        xColors: this.xColors,
-        circleColor: this.circleColor,
-        showCursor: this.showCursor,
+        width: this.opts.width,
+        height: this.opts.height,
+        canvas: this.opts.canvas,
+        minCircleSpeed: this.opts.speedRange[0],
+        maxCircleSpeed: this.opts.speedRange[1],
+        minCircleSize: this.opts.circleSize[0],
+        maxCircleSize: this.opts.circleSize[1],
+        cellSize: this.opts.cellSize,
+        variance: this.opts.variance,
+        xColors: this.opts.xColors,
+        circleColor: this.opts.circleColor,
+        showCursor: this.opts.showCursor,
       }
     },
   },
+  watch: {
+    opts: {
+      handler() {
+        this.updateBackground()
+      },
+      deep: true,
+    },
+  },
   mounted() {
-    this.width = window.innerWidth
-    this.height = window.innerHeight
-    this.canvas = document.querySelector('#bg')
-    this.background = new Background(this.opts)
-    this.changePreset(this.selectedPreset)
+    this.opts.width = window.innerWidth
+    this.opts.height = window.innerHeight
+    this.opts.canvas = document.querySelector('#bg')
+    this.background = new Background(this.computedOpts)
+    this.changePreset(this.opts.selectedPreset)
   },
   methods: {
     changePreset(value) {
-      this.xColors = value.xColors !== undefined ? value.xColors : this.xColors
-      this.circleSize =
-        value.circleSize !== undefined ? value.circleSize : this.circleSize
-      this.showCursor =
-        value.showCursor !== undefined ? value.showCursor : this.showCursor
+      this.opts.xColors =
+        value.xColors !== undefined ? value.xColors : this.opts.xColors
+      this.opts.circleSize =
+        value.circleSize !== undefined ? value.circleSize : this.opts.circleSize
+      this.opts.showCursor =
+        value.showCursor !== undefined ? value.showCursor : this.opts.showCursor
       this.updateBackground()
     },
     updateBackground() {
-      this.background.setOpts(this.opts)
+      this.background.setOpts(this.computedOpts)
     },
     reset() {
-      this.speedRange = SPEED_RANGE
-      this.circleSize = CIRCLE_SIZE
-      this.cellSize = CELLSIZE
-      this.variance = VARIANCE
-      this.changePreset(PRESETS[Math.floor(Math.random() * PRESETS.length)])
+      this.opts.speedRange = SPEED_RANGE
+      this.opts.circleSize = CIRCLE_SIZE
+      this.opts.cellSize = CELLSIZE
+      this.opts.variance = VARIANCE
+      this.changePreset(
+        this.presets[Math.floor(Math.random() * this.presets.length)]
+      )
       this.updateBackground()
     },
   },
