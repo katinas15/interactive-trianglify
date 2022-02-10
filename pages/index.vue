@@ -27,6 +27,7 @@ const PRESETS = [
     name: 'White and Grey',
     xColors: COLORS_WHITE_GREY,
     circleSize: [2, 5],
+    showCursor: false,
   },
   {
     name: 'Deus Ex',

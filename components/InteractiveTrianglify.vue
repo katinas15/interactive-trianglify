@@ -351,14 +351,6 @@ export default {
       }
     },
   },
-  watch: {
-    opts: {
-      handler() {
-        this.updateBackground()
-      },
-      deep: true,
-    },
-  },
   mounted() {
     this.width = window.innerWidth
     this.height = window.innerHeight
@@ -368,8 +360,11 @@ export default {
   },
   methods: {
     changePreset(value) {
-      this.xColors = value.xColors || this.xColors
-      this.circleSize = value.circleSize || this.circleSize
+      this.xColors = value.xColors !== undefined ? value.xColors : this.xColors
+      this.circleSize =
+        value.circleSize !== undefined ? value.circleSize : this.circleSize
+      this.showCursor =
+        value.showCursor !== undefined ? value.showCursor : this.showCursor
       this.updateBackground()
     },
     updateBackground() {
