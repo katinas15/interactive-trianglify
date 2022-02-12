@@ -407,14 +407,8 @@ export default {
 </script>
 
 <style scoped>
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 .content {
-  position: relative;
+  position: absolute;
   z-index: 1;
 }
 </style>

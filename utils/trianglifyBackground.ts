@@ -138,8 +138,8 @@ export default class Background {
   }
 
   private handleClicks = () => {
-    this.opts.canvas.addEventListener('click', (event) => {
-      this.points.push([event.clientX, event.clientY])
+    window.addEventListener('click', (event) => {
+      this.points.push([event.pageX, event.pageY])
       this.movementDirections.push(
         generateMovementDirection(
           this.opts.minCircleSpeed,
@@ -154,10 +154,10 @@ export default class Background {
   }
 
   private handleMouseMovement = () => {
-    this.opts.canvas.addEventListener('mousemove', (event) => {
+    window.addEventListener('mousemove', (event) => {
       if (!this.enableCallMouse) return
       this.enableCallMouse = false
-      this.mousePos = [event.clientX, event.clientY]
+      this.mousePos = [event.pageX, event.pageY]
       setTimeout(() => {
         this.enableCallMouse = true
       }, FRAME_DELAY)
