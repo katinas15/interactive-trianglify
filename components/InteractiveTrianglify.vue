@@ -397,8 +397,12 @@ export default {
       this.opts.circleSize = CIRCLE_SIZE
       this.opts.cellSize = CELLSIZE
       this.opts.variance = VARIANCE
+      this.opts.width = window.innerWidth
+      this.opts.height = window.innerHeight
       this.changePreset(
-        this.presets[Math.floor(Math.random() * this.presets.length)]
+        this.randomizedPresets[
+          Math.floor(Math.random() * this.randomizedPresets.length)
+        ]
       )
       this.updateBackground()
     },
