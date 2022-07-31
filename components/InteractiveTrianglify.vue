@@ -255,23 +255,29 @@
                     </v-card>
                   </v-dialog>
                 </v-row>
+                <v-select
+                  v-model="opts.selectedPreset"
+                  :items="presets"
+                  label="Color Presets"
+                  item-text="name"
+                  return-object
+                  single-line
+                  width="60%"
+                  class="mr-4 d-inline-block"
+                  @change="changePreset"
+                ></v-select>
+                <v-btn
+                  text
+                  class="mr-8 d-inline-block"
+                  @click="opts.xColors.push('#000000')"
+                >
+                  Add color
+                </v-btn>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-select
-                v-model="opts.selectedPreset"
-                :items="presets"
-                label="Color Presets"
-                item-text="name"
-                return-object
-                single-line
-                class="mr-5"
-                @change="changePreset"
-              ></v-select>
-              <v-btn text class="mr-10" @click="opts.xColors.push('#000000')">
-                Add color
-              </v-btn>
+
               <v-btn color="red" text @click="reset()"> Reset </v-btn>
               <v-btn
                 color="blue darken-1"
