@@ -373,8 +373,8 @@ export default {
     },
   },
   mounted() {
-    this.opts.width = window.innerWidth
-    this.opts.height = window.innerHeight
+    this.opts.width = window.outerWidth
+    this.opts.height = window.outerHeight
     this.opts.canvas = document.querySelector('#bg')
     this.background = new Background(this.computedOpts)
     this.changePreset(this.opts.selectedPreset)
