@@ -20,3 +20,9 @@ export default {
   name: 'DefaultLayout',
 }
 </script>
+
+<style>
+html {
+  overflow: hidden; /* Hide scrollbars */
+}
+</style>
